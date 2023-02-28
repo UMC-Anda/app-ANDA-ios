@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 
-const style = StyleSheet.create({
+const LoginStyle = StyleSheet.create({
   loginView: {
     height: '100%',
     width: '100%',
@@ -67,4 +67,4 @@ const style = StyleSheet.create({
   },
 });
 
-export default style;
+export default LoginStyle;

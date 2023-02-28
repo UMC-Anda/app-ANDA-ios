@@ -12,7 +12,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import RegisterScreen from './src/screens/Register/RegisterScreen';
 import SplashScreen from './src/screens/SplashScreen';
-
+import {RecoilRoot} from 'recoil';
+import {Provider} from 'react-native-paper';
 const Stack = createNativeStackNavigator();
 
 const styles = StyleSheet.create({
@@ -48,31 +49,45 @@ const Theme = {
     ...DefaultTheme.colors,
     primary: '#1CBBD9',
     background: '#ffffff',
-    text: '#000',
+    text: '#00000',
   },
 };
 
+// const paperTheme = {
+//   ...DefaultTheme,
+//   colors: {
+//     ...DefaultTheme.colors,
+//     primary: '#1CBBD9',
+//     background: '#ffffff',
+//     text: '#00000',
+//   },
+// };
+
 function App(): JSX.Element {
   return (
-    <View style={styles.container}>
-      <NavigationContainer theme={Theme}>
-        <Stack.Navigator
-          initialRouteName="SplashScreen"
-          screenOptions={{
-            headerShown: false,
-            animation: 'fade',
-          }}>
-          <Stack.Screen
-            name="SplashScreen"
-            component={SplashScreen}
-            // Hiding header for Splash Screen
-            options={{headerShown: false}}
-          />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Register" component={RegisterScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </View>
+    <RecoilRoot>
+      <Provider theme={Theme}>
+        <View style={styles.container}>
+          <NavigationContainer theme={Theme}>
+            <Stack.Navigator
+              initialRouteName="SplashScreen"
+              screenOptions={{
+                headerShown: false,
+                animation: 'fade',
+              }}>
+              <Stack.Screen
+                name="SplashScreen"
+                component={SplashScreen}
+                // Hiding header for Splash Screen
+                options={{headerShown: false}}
+              />
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Register" component={RegisterScreen} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </View>
+      </Provider>
+    </RecoilRoot>
   );
 }
 
