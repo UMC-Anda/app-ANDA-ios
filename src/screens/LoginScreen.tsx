@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {Button, IconButton} from 'react-native-paper';
 import style from './LoginScreen.style';
+import http from '../utils/http';
 // import {IconButton, MD3Colors} from 'react-native-paper';
 
 const Width = Dimensions.get('window').width;
@@ -93,8 +94,10 @@ function LoginScreen({navigation}: any): JSX.Element {
       <View style={[style.fullWidth, {alignItems: 'center'}]}>
         <Button
           mode="contained-tonal"
-          onPress={() => {
-            console.log('test');
+          onPress={async () => {
+            // try{
+            //   const res = await http.get("");
+            // }
           }}
           style={style.loginButton}
           labelStyle={{color: '#fff', width: Width * 0.8}}>

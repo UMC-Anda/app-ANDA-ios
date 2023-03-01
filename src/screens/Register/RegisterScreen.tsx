@@ -1,6 +1,6 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import RegisterType from './RegisterType';
-import React from 'react';
+import React, {useEffect} from 'react';
 import RegisterAgree from './RegisterAgree';
 import {View} from 'react-native';
 import {Button, DefaultTheme, IconButton} from 'react-native-paper';
@@ -8,8 +8,9 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import style from './Register.style';
 import {useNavigation} from '@react-navigation/native';
 import {useRecoilState, useSetRecoilState} from 'recoil';
-import {readyButton} from '../../state/Register';
+import {readyButton, registerInfoNormal} from '../../state/Register';
 import RegisterInfo from './RegisterInfo';
+import http from '../../utils/http';
 
 const Stack = createNativeStackNavigator();
 
@@ -47,7 +48,14 @@ function RegisterScreen(): JSX.Element {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const [ready, setReady] = useRecoilState(readyButton);
+  const [info, setInfo] = useRecoilState(registerInfoNormal);
   console.log(ready);
+
+  useEffect(() => {
+    if (current === 2 && info.email && info.nickname && info.password) {
+      setReady(true);
+    }
+  }, [info, setReady]);
   return (
     <View style={{height: '100%'}}>
       <Stack.Navigator
@@ -86,13 +94,23 @@ function RegisterScreen(): JSX.Element {
         theme={theme}
         disabled={!ready}
         contentStyle={{paddingBottom: insets.bottom, paddingTop: 7}}
-        onPress={() => {
+        onPress={async () => {
           if (current < 2) {
             current++;
+            setReady(false);
+            navigation.navigate(route[current]);
           } else {
+            try {
+              const res = await http.post('/users/signup', info);
+              if (res.data.isSuccess) {
+                navigation.goBack();
+              } else {
+                throw Error('회원가입 실패');
+              }
+            } catch (err) {
+              console.log(err);
+            }
           }
-          setReady(false);
-          navigation.navigate(route[current]);
         }}>
         {buttonContent[current]}
       </Button>
