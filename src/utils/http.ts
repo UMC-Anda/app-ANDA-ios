@@ -1,17 +1,18 @@
 import axios from 'axios';
+import {getAccessToken} from './jwt';
 
 const http = axios.create({baseURL: 'http://one-hana.site:8000/app/'});
-// http.interceptors.request.use(
-//   config => {
-//     const isAuthenticated = stores.getters.isAuthenticated;
-//     if (isAuthenticated) {
-//       config.headers.common.Authorization = `Bearer ${stores.getters.getAccessToken}`;
-//     }
-//     return config;
-//   },
-//   error => {
-//     Promise.reject(error);
-//   },
-// );
+http.interceptors.request.use(
+  async config => {
+    const accessToekn = await getAccessToken();
+    if (accessToekn) {
+      config.headers.common.Authorization = `Bearer ${accessToekn}`;
+    }
+    return config;
+  },
+  error => {
+    Promise.reject(error);
+  },
+);
 
 export default http;

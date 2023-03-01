@@ -11,6 +11,7 @@ import {
 import {Button, IconButton} from 'react-native-paper';
 import style from './LoginScreen.style';
 import http from '../utils/http';
+import {saveToken} from '../utils/jwt';
 // import {IconButton, MD3Colors} from 'react-native-paper';
 
 const Width = Dimensions.get('window').width;
@@ -99,6 +100,8 @@ function LoginScreen({navigation}: any): JSX.Element {
               const res = await http.get('/users/signin');
               if (res.data.isSuccessisSuccess) {
                 // jwt 토큰관리
+                const data = res.data.result;
+                saveToken(data.AccessJWT, data.RefreshJWT);
               } else {
                 throw Error('로그인 실패');
               }
