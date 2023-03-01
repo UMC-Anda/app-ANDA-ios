@@ -9,8 +9,9 @@ import React, {useEffect, useState} from 'react';
 import CheckBox from '../../components/CheckBox';
 import {RegisterAgreeStyle as style} from './Register.style';
 import {useSetRecoilState} from 'recoil';
-import {readyButton, registerTerms} from '../../state/Register';
 import {Appbar} from 'react-native-paper';
+import {readyButton, registerTerms} from '../../state/register';
+
 const TermsModal = function ({visible, setVisible}: any): JSX.Element {
   return (
     <Modal visible={visible}>

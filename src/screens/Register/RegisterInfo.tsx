@@ -1,7 +1,7 @@
 import {ScrollView, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useRecoilState, useRecoilValue} from 'recoil';
-import {registerInfoNormal, registerType} from '../../state/Register';
+import {registerInfoNormal, registerType} from '../../state/register';
 import {Button, TextInput} from 'react-native-paper';
 import {RegisterInfoStyle as style} from './Register.style';
 import http from '../../utils/http';

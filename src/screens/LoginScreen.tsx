@@ -95,9 +95,16 @@ function LoginScreen({navigation}: any): JSX.Element {
         <Button
           mode="contained-tonal"
           onPress={async () => {
-            // try{
-            //   const res = await http.get("");
-            // }
+            try {
+              const res = await http.get('/users/signin');
+              if (res.data.isSuccessisSuccess) {
+                // jwt 토큰관리
+              } else {
+                throw Error('로그인 실패');
+              }
+            } catch (err) {
+              console.log(err);
+            }
           }}
           style={style.loginButton}
           labelStyle={{color: '#fff', width: Width * 0.8}}>

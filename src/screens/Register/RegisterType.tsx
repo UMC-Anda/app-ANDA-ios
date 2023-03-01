@@ -4,8 +4,8 @@ import User from '../../../assets/icons/fi-rr-user.svg';
 import Stethoscope from '../../../assets/icons/fi-rr-stethoscope.svg';
 import {RegisterTypeStyle as style} from './Register.style';
 import {useSetRecoilState} from 'recoil';
-import {readyButton} from '../../state/Register';
-import {registerType} from '../../state/Register';
+import {readyButton} from '../../state/register';
+import {registerType} from '../../state/register';
 
 const RegisterType = function (): JSX.Element {
   const [normal, setNormal] = React.useState(false);
