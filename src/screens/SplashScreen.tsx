@@ -2,7 +2,8 @@ import * as BootSplash from 'react-native-bootsplash';
 import {View} from 'react-native';
 import {Animated, Dimensions, StyleSheet} from 'react-native';
 import * as React from 'react';
-import {getAccessToken} from '../utils/jwt';
+import {useRecoilValue} from 'recoil';
+import {accessTokenState} from '../state/jwt';
 
 const bootSplashLogo = require('../../assets/images/logo.png');
 
@@ -38,10 +39,11 @@ function SplashScreen({navigation}: any): JSX.Element {
     React.useState(false);
   const opacity = React.useRef(new Animated.Value(1));
   const translateY = React.useRef(new Animated.Value(0));
+  const accessToken = useRecoilValue(accessTokenState);
 
   const init = React.useCallback(async () => {
     try {
-      const token = await getAccessToken();
+      const token = accessToken;
       await BootSplash.hide();
       Animated.stagger(350, [
         Animated.spring(translateY.current, {
@@ -73,7 +75,7 @@ function SplashScreen({navigation}: any): JSX.Element {
       setBootSplashIsVisible(false);
       navigation.replace('Login');
     }
-  }, [navigation]);
+  }, [accessToken, navigation]);
 
   React.useEffect(() => {
     bootSplashLogoIsLoaded && init();

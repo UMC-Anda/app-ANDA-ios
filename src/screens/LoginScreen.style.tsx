@@ -63,7 +63,7 @@ const LoginStyle = StyleSheet.create({
     borderRadius: 4,
   },
   CheckBox: {
-    marginRight: 8,
+    marginLeft: 8,
   },
 });
 

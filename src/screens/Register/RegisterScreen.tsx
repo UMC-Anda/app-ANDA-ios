@@ -10,7 +10,8 @@ import {useNavigation} from '@react-navigation/native';
 import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
 import {readyButton, registerInfoNormal} from '../../state/register';
 import RegisterInfo from './RegisterInfo';
-import http from '../../utils/http';
+import httpState from '../../state/http';
+// import http from '../../utils/http';
 
 const Stack = createNativeStackNavigator();
 
@@ -45,6 +46,8 @@ function HeaderLeft({navigation}: any): JSX.Element {
 }
 
 function RegisterScreen(): JSX.Element {
+  const http = useRecoilValue(httpState);
+
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const [ready, setReady] = useRecoilState(readyButton);

@@ -1,25 +1,27 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {
-  Image,
-  Text,
-  TextInput,
-  View,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
+import {Image, Text, TextInput, View, Dimensions} from 'react-native';
 import {Button, IconButton} from 'react-native-paper';
 import style from './LoginScreen.style';
-import http from '../utils/http';
-import {saveToken} from '../utils/jwt';
+import {useRecoilState, useRecoilValue} from 'recoil';
+import httpState from '../state/http';
+import {saveTokenState} from '../state/jwt';
+import {autoLoginState, isSaveIDState, savedIDState} from '../state/setting';
+import CheckBox from '../components/CheckBox';
 // import {IconButton, MD3Colors} from 'react-native-paper';
 
 const Width = Dimensions.get('window').width;
 
 function LoginScreen({navigation}: any): JSX.Element {
-  const [saveID, setSaveID] = React.useState(false);
-  const [autoLogin, setAutoLogin] = React.useState(false);
+  const http = useRecoilValue(httpState);
+  const saveToken = useRecoilValue(saveTokenState);
+
+  const [isSaveID, setisSaveID] = useRecoilState(isSaveIDState);
+  const [autoLogin, setAutoLogin] = useRecoilState(autoLoginState);
+  const [savedID, setSavedID] = useRecoilState(savedIDState);
   const [showPass, setShowPass] = React.useState(true);
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
   return (
     <View style={style.loginView}>
       <View style={style.logoWrap}>
@@ -32,7 +34,15 @@ function LoginScreen({navigation}: any): JSX.Element {
       <View style={style.fullWidth}>
         <View style={style.inputWrap}>
           <Text style={style.inputTitle}>아이디</Text>
-          <TextInput style={style.inputText} placeholder="이메일 주소" />
+          <TextInput
+            defaultValue={isSaveID ? savedID : ''}
+            style={style.inputText}
+            placeholder="이메일 주소"
+            autoCapitalize="none"
+            onChangeText={text => {
+              setEmail(text);
+            }}
+          />
         </View>
         <View style={{height: 38}} />
         <View style={style.inputWrap}>
@@ -42,6 +52,10 @@ function LoginScreen({navigation}: any): JSX.Element {
               style={[style.inputText, {paddingRight: 30}]}
               placeholder="영문, 숫자, 특수문자 조합 8자리이상"
               secureTextEntry={showPass}
+              autoCapitalize="none"
+              onChangeText={text => {
+                setPassword(text);
+              }}
             />
             <IconButton
               icon={showPass ? 'eye-off' : 'eye'}
@@ -56,39 +70,26 @@ function LoginScreen({navigation}: any): JSX.Element {
         <View style={{height: 16}} />
         <View style={style.row}>
           <View style={style.row}>
-            <TouchableOpacity
-              // underlayColor="#1CBBD9"
-              onPress={() => {
-                setSaveID(!saveID);
+            <CheckBox
+              checked={isSaveID}
+              setChecked={() => {
+                setisSaveID(!isSaveID);
               }}
-              style={style.CheckBox}>
-              <Image
-                source={
-                  saveID
-                    ? require('ANDA/assets/icons/checkOn.png')
-                    : require('ANDA/assets/icons/checkOff.png')
-                }
-              />
-            </TouchableOpacity>
-            <Text>아이디 저장</Text>
+              size={20}
+            />
+            <Text style={style.CheckBox}>아이디 저장</Text>
           </View>
           <View style={{width: 12}} />
           <View style={style.row}>
-            <TouchableOpacity
-              // underlayColor="#1CBBD9"
-              onPress={() => {
+            <CheckBox
+              checked={autoLogin}
+              setChecked={() => {
+                console.log(autoLogin);
                 setAutoLogin(!autoLogin);
               }}
-              style={style.CheckBox}>
-              <Image
-                source={
-                  autoLogin
-                    ? require('ANDA/assets/icons/checkOn.png')
-                    : require('ANDA/assets/icons/checkOff.png')
-                }
-              />
-            </TouchableOpacity>
-            <Text>자동 로그인</Text>
+              size={20}
+            />
+            <Text style={style.CheckBox}>자동 로그인</Text>
           </View>
         </View>
       </View>
@@ -97,11 +98,19 @@ function LoginScreen({navigation}: any): JSX.Element {
           mode="contained-tonal"
           onPress={async () => {
             try {
-              const res = await http.get('/users/signin');
-              if (res.data.isSuccessisSuccess) {
+              if (isSaveID) {
+                setSavedID(email);
+              }
+              const res = await http.post('/users/signin', {
+                email: email,
+                password: password,
+              });
+              console.log(res.data);
+              if (res.data.isSuccess) {
                 // jwt 토큰관리
                 const data = res.data.result;
                 saveToken(data.AccessJWT, data.RefreshJWT);
+                console.log('성공');
               } else {
                 throw Error('로그인 실패');
               }
