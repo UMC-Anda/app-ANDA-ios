@@ -1,11 +1,12 @@
 import {ScrollView, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useRecoilState, useRecoilValue} from 'recoil';
-import {registerInfoNormal, registerType} from '../../state/Register';
+import {registerInfoNormal, registerType} from '../../state/register';
 import {Button, TextInput} from 'react-native-paper';
 import {RegisterInfoStyle as style} from './Register.style';
-import http from '../../utils/http';
+// import http from '../../utils/http';
 import Toast from 'react-native-toast-message';
+import http from '../../utils/http';
 
 const emailRegEx =
   /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
@@ -16,7 +17,7 @@ const showToast = (text: string, type: string) => {
     type: type,
     position: 'bottom',
     text1: text,
-    visibilityTime: 1000,
+    visibilityTime: 1500,
     bottomOffset: 0,
   });
 };

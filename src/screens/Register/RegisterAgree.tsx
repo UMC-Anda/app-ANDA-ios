@@ -9,8 +9,9 @@ import React, {useEffect, useState} from 'react';
 import CheckBox from '../../components/CheckBox';
 import {RegisterAgreeStyle as style} from './Register.style';
 import {useSetRecoilState} from 'recoil';
-import {readyButton, registerTerms} from '../../state/Register';
 import {Appbar} from 'react-native-paper';
+import {readyButton, registerTerms} from '../../state/register';
+
 const TermsModal = function ({visible, setVisible}: any): JSX.Element {
   return (
     <Modal visible={visible}>
@@ -89,10 +90,10 @@ const RegisterAgree = function (): JSX.Element {
     setAll(over14 && useTerms && privacy && ad);
     setReady(over14 && useTerms && privacy);
     setTerms({
-      over14: over14,
-      useTerms: useTerms,
-      privacy: privacy,
-      ad: ad,
+      isOverAge: over14,
+      isTermsOfUseAgree: useTerms,
+      isPrivacyPolicyAgree: privacy,
+      isMarketingInfoAgree: ad,
     });
   }, [over14, useTerms, privacy, ad, setReady, setTerms]);
 

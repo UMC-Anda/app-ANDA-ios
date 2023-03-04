@@ -7,10 +7,16 @@ import {Button, DefaultTheme, IconButton} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import style from './Register.style';
 import {useNavigation} from '@react-navigation/native';
-import {useRecoilState, useSetRecoilState} from 'recoil';
-import {readyButton, registerInfoNormal} from '../../state/Register';
+import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
+import {
+  readyButton,
+  registerInfoNormal,
+  registerTerms,
+} from '../../state/register';
 import RegisterInfo from './RegisterInfo';
+import {SHA256} from 'crypto-js';
 import http from '../../utils/http';
+// import http from '../../utils/http';
 
 const Stack = createNativeStackNavigator();
 
@@ -48,7 +54,8 @@ function RegisterScreen(): JSX.Element {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const [ready, setReady] = useRecoilState(readyButton);
-  const [info, setInfo] = useRecoilState(registerInfoNormal);
+  const info = useRecoilValue(registerInfoNormal);
+  const terms = useRecoilValue(registerTerms);
   console.log(ready);
 
   useEffect(() => {
@@ -98,14 +105,18 @@ function RegisterScreen(): JSX.Element {
           if (current < 2) {
             current++;
             setReady(false);
-            navigation.navigate(route[current]);
+            navigation.navigate(route[current] as never);
           } else {
             try {
-              const res = await http.post('/users/signup', info);
-              if (res.data.isSuccess) {
+              const {data} = await http.post('/users/signup', {
+                ...info,
+                password: SHA256(info.password).toString(),
+                ...terms,
+              });
+              if (data.isSuccess) {
                 navigation.goBack();
               } else {
-                throw Error('회원가입 실패');
+                throw Error(data.message);
               }
             } catch (err) {
               console.log(err);

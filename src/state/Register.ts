@@ -13,10 +13,10 @@ export const registerType = atom<String>({
 export const registerTerms = atom({
   key: 'RegisterTerms',
   default: {
-    over14: false,
-    useTerms: false,
-    privacy: false,
-    ad: false,
+    isOverAge: false,
+    isTermsOfUseAgree: false,
+    isPrivacyPolicyAgree: false,
+    isMarketingInfoAgree: false,
   },
 });
 
