@@ -13,7 +13,7 @@ import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import RegisterScreen from './src/screens/Register/RegisterScreen';
 import SplashScreen from './src/screens/SplashScreen';
 import {RecoilRoot} from 'recoil';
-import {Provider} from 'react-native-paper';
+import {Provider as PaperProvider} from 'react-native-paper';
 const Stack = createNativeStackNavigator();
 
 const styles = StyleSheet.create({
@@ -66,7 +66,7 @@ const Theme = {
 function App(): JSX.Element {
   return (
     <RecoilRoot>
-      <Provider theme={Theme}>
+      <PaperProvider theme={Theme}>
         <View style={styles.container}>
           <NavigationContainer theme={Theme}>
             <Stack.Navigator
@@ -86,7 +86,7 @@ function App(): JSX.Element {
             </Stack.Navigator>
           </NavigationContainer>
         </View>
-      </Provider>
+      </PaperProvider>
     </RecoilRoot>
   );
 }

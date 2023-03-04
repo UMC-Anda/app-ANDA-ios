@@ -90,10 +90,10 @@ const RegisterAgree = function (): JSX.Element {
     setAll(over14 && useTerms && privacy && ad);
     setReady(over14 && useTerms && privacy);
     setTerms({
-      over14: over14,
-      useTerms: useTerms,
-      privacy: privacy,
-      ad: ad,
+      isOverAge: over14,
+      isTermsOfUseAgree: useTerms,
+      isPrivacyPolicyAgree: privacy,
+      isMarketingInfoAgree: ad,
     });
   }, [over14, useTerms, privacy, ad, setReady, setTerms]);
 

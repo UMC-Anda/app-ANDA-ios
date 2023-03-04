@@ -2,8 +2,9 @@ import * as BootSplash from 'react-native-bootsplash';
 import {View} from 'react-native';
 import {Animated, Dimensions, StyleSheet} from 'react-native';
 import * as React from 'react';
+import {isAuthenticated} from '../utils/jwt';
 import {useRecoilValue} from 'recoil';
-import {accessTokenState} from '../state/jwt';
+import {autoLoginState} from '../state/setting';
 
 const bootSplashLogo = require('../../assets/images/logo.png');
 
@@ -39,11 +40,12 @@ function SplashScreen({navigation}: any): JSX.Element {
     React.useState(false);
   const opacity = React.useRef(new Animated.Value(1));
   const translateY = React.useRef(new Animated.Value(0));
-  const accessToken = useRecoilValue(accessTokenState);
+  const isAutoLogin = useRecoilValue(autoLoginState);
 
   const init = React.useCallback(async () => {
     try {
-      const token = accessToken;
+      // const token = await getrefreshToken();
+      const isAuth = await isAuthenticated();
       await BootSplash.hide();
       Animated.stagger(350, [
         Animated.spring(translateY.current, {
@@ -62,20 +64,18 @@ function SplashScreen({navigation}: any): JSX.Element {
         delay: 350,
       }).start(() => {
         setBootSplashIsVisible(false);
-        if (token) {
-          // navigation.replace('main');
+        if (isAuth && isAutoLogin) {
+          navigation.replace('main');
+          // navigation.replace('Login');
         } else {
           navigation.replace('Login');
         }
-        //     AsyncStorage.getItem('user_id').then((value) =>
-        //     navigation.replace(value === null ? 'Auth' : 'DrawerNavigationRoutes'),
-        //   );
       });
     } catch (error) {
       setBootSplashIsVisible(false);
       navigation.replace('Login');
     }
-  }, [accessToken, navigation]);
+  }, [navigation, isAutoLogin]);
 
   React.useEffect(() => {
     bootSplashLogoIsLoaded && init();

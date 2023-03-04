@@ -6,8 +6,7 @@ import {Button, TextInput} from 'react-native-paper';
 import {RegisterInfoStyle as style} from './Register.style';
 // import http from '../../utils/http';
 import Toast from 'react-native-toast-message';
-import httpState from '../../state/http';
-import {SHA256} from 'crypto-js';
+import http from '../../utils/http';
 
 const emailRegEx =
   /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
@@ -72,8 +71,6 @@ type item = {
   status: number;
 };
 const NormalInfo = function (): JSX.Element {
-  const http = useRecoilValue(httpState);
-
   const [info, setInfo] = useRecoilState(registerInfoNormal);
   const [email, setEmail] = useState<item>({value: '', status: 0});
   const [emailConfirm, setEmailConfirm] = useState<item>({
@@ -245,7 +242,7 @@ const NormalInfo = function (): JSX.Element {
           if (password.status > 0 && text === password.value) {
             setInfo({
               ...info,
-              password: SHA256(text).toString(),
+              password: text,
             });
           }
           setPasswordConfirm({

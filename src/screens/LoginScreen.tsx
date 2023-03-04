@@ -3,19 +3,17 @@ import React from 'react';
 import {Image, Text, TextInput, View, Dimensions} from 'react-native';
 import {Button, IconButton} from 'react-native-paper';
 import style from './LoginScreen.style';
-import {useRecoilState, useRecoilValue} from 'recoil';
-import httpState from '../state/http';
-import {saveTokenState} from '../state/jwt';
+import {useRecoilState} from 'recoil';
+import http from '../utils/http';
 import {autoLoginState, isSaveIDState, savedIDState} from '../state/setting';
 import CheckBox from '../components/CheckBox';
+import {SHA256} from 'crypto-js';
+import {setToken} from '../utils/jwt';
 // import {IconButton, MD3Colors} from 'react-native-paper';
 
 const Width = Dimensions.get('window').width;
 
 function LoginScreen({navigation}: any): JSX.Element {
-  const http = useRecoilValue(httpState);
-  const saveToken = useRecoilValue(saveTokenState);
-
   const [isSaveID, setisSaveID] = useRecoilState(isSaveIDState);
   const [autoLogin, setAutoLogin] = useRecoilState(autoLoginState);
   const [savedID, setSavedID] = useRecoilState(savedIDState);
@@ -101,21 +99,19 @@ function LoginScreen({navigation}: any): JSX.Element {
               if (isSaveID) {
                 setSavedID(email);
               }
-              const res = await http.post('/users/signin', {
+              const {data} = await http.post('/users/signin', {
                 email: email,
-                password: password,
+                password: SHA256(password).toString(),
               });
-              console.log(res.data);
-              if (res.data.isSuccess) {
+              if (data.isSuccess) {
                 // jwt 토큰관리
-                const data = res.data.result;
-                saveToken(data.AccessJWT, data.RefreshJWT);
-                console.log('성공');
+                const {AccessJWT, RefreshJWT} = data.result;
+                await setToken(AccessJWT, RefreshJWT);
               } else {
                 throw Error('로그인 실패');
               }
             } catch (err) {
-              console.log(err);
+              console.error(err);
             }
           }}
           style={style.loginButton}
