@@ -94,6 +94,15 @@ type item = {
   value: string;
   status: number;
 };
+
+type Hospital = {
+  id: number;
+  name: string;
+  townName: string;
+  address: string;
+  xCoordi: string;
+  yCoordi: string;
+};
 const RegisterInfo = function (): JSX.Element {
   const [info, setInfo] = useRecoilState(registerInfoNormal);
   const [email, setEmail] = useState<item>({value: '', status: 0});
@@ -107,13 +116,7 @@ const RegisterInfo = function (): JSX.Element {
     status: 0,
   });
   const [nickname, setNickname] = useState<item>({value: '', status: 0});
-  const [hospitalList, setHospitalList] = useState([
-    {id: 1, title: 'test'},
-    {id: 2, title: 'test2'},
-    {id: 3, title: 'test2'},
-    {id: 4, title: 'test2'},
-    {id: 5, title: 'test2'},
-  ]);
+  const [hospitalList, setHospitalList] = useState<Hospital[]>([]);
   const [hospital, setHospital] = useState<item>({value: '', status: 0});
   const [doctorName, setDoctorName] = useState<item>({value: '', status: 0});
   const [showList, setShowList] = useState(false);
@@ -299,11 +302,23 @@ const RegisterInfo = function (): JSX.Element {
                   status: 0,
                 });
                 if (text.length > 2) {
-                  setShowList(true);
                   try {
-                    const {data} = await http.get('');
-                    setHospitalList(data.list);
+                    const {data} = await http.get(
+                      `/search/hospital?name=${text}`,
+                      {
+                        headers: {
+                          'x-api-key': 'andaMorundaAdminKey',
+                        },
+                      },
+                    );
+                    if (data.result && data.result.length > 0) {
+                      setHospitalList(data.result);
+                      setShowList(true);
+                    } else {
+                      setShowList(false);
+                    }
                   } catch (err) {
+                    setShowList(false);
                     console.error(err);
                   }
                 } else {
@@ -322,12 +337,12 @@ const RegisterInfo = function (): JSX.Element {
                       style={style.hospitalItem}
                       onPress={() => {
                         setHospital({
-                          value: item.title,
+                          value: item.name,
                           status: 1,
                         });
                         setShowList(false);
                       }}>
-                      <Text>{item.title}</Text>
+                      <Text>{item.name}</Text>
                     </TouchableOpacity>
                   );
                 })}
