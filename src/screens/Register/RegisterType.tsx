@@ -5,13 +5,13 @@ import Stethoscope from '../../../assets/icons/fi-rr-stethoscope.svg';
 import {RegisterTypeStyle as style} from './Register.style';
 import {useSetRecoilState} from 'recoil';
 import {readyButton} from '../../state/register';
-import {registerType} from '../../state/register';
+import {registerTypeState} from '../../state/register';
 
 const RegisterType = function (): JSX.Element {
   const [normal, setNormal] = React.useState(false);
   const [doctor, setDoctor] = React.useState(false);
   const setReady = useSetRecoilState(readyButton);
-  const setRegisterType = useSetRecoilState(registerType);
+  const setRegisterType = useSetRecoilState(registerTypeState);
   useEffect(() => {
     setReady(normal || doctor);
     if (normal) {

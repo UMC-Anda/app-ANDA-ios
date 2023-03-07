@@ -50,6 +50,8 @@ const Theme = {
     primary: '#1CBBD9',
     background: '#ffffff',
     text: '#00000',
+    error: '#FA2F13',
+    info: '1CB9D9',
   },
 };
 

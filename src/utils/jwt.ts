@@ -11,7 +11,6 @@ export const setToken = async (
   newAccessToken: string,
   newRefreshToken: string,
 ) => {
-  http.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
   // console.log
   try {
     const decodedToken: {id: number; email: string; nickname: string} =
