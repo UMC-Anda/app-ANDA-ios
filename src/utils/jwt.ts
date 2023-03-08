@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import http from './http';
+// import http from './http';
 import jwtDecode from 'jwt-decode';
 import {setUser} from './user';
 

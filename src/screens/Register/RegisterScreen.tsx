@@ -29,7 +29,7 @@ const theme = {
 };
 
 // let current = 0;
-const route = ['Type', 'Agree', 'Info'];
+const routes = ['Type', 'Agree', 'Info'];
 const buttonContent = ['다음', '동의 후 가입하기', '회원가입 완료'];
 
 function HeaderLeft({navigation, current, setCurrent}: any): JSX.Element {
@@ -66,7 +66,7 @@ function RegisterScreen(): JSX.Element {
 
   useEffect(() => {
     setReady(false);
-    navigation.navigate(route[current] as never);
+    navigation.navigate(routes[current] as never);
   }, [current, navigation, setReady]);
   return (
     <View style={{height: '100%'}}>

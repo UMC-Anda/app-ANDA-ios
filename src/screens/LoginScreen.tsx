@@ -105,8 +105,9 @@ function LoginScreen({navigation}: any): JSX.Element {
               });
               if (data.isSuccess) {
                 // jwt 토큰관리
-                const {AccessJWT, RefreshJWT} = data.result;
-                await setToken(AccessJWT, RefreshJWT);
+                const {accessToken, refreshToken} = data.result;
+                await setToken(accessToken, refreshToken);
+                navigation.replace('Main');
               } else {
                 throw Error('로그인 실패');
               }
