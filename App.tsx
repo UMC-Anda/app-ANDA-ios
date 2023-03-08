@@ -53,6 +53,9 @@ const Theme = {
     text: '#00000',
     error: '#FA2F13',
     info: '1CB9D9',
+    elevation: {
+      level2: '#fff',
+    },
   },
 };
 

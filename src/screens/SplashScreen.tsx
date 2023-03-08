@@ -68,7 +68,7 @@ function SplashScreen({navigation}: any): JSX.Element {
       }).start(() => {
         setBootSplashIsVisible(false);
         if (isAuth && isAutoLogin) {
-          navigation.replace('main');
+          navigation.replace('Main');
           // navigation.replace('Login');
         } else {
           distroyToken();
