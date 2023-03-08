@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import http from './http';
+// import http from './http';
 import jwtDecode from 'jwt-decode';
 import {setUser} from './user';
 
@@ -11,7 +11,6 @@ export const setToken = async (
   newAccessToken: string,
   newRefreshToken: string,
 ) => {
-  http.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
   // console.log
   try {
     const decodedToken: {id: number; email: string; nickname: string} =

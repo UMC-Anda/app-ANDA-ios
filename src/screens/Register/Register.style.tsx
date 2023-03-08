@@ -158,9 +158,9 @@ export const RegisterInfoStyle = StyleSheet.create({
     width: 75,
     marginLeft: 16,
   },
-  itemWrap: {
-    marginBottom: 40,
-  },
+  // itemWrap: {
+  //   marginBottom: 40,
+  // },
   success: {
     marginTop: 5,
     color: '#1CB9D9',
@@ -169,7 +169,78 @@ export const RegisterInfoStyle = StyleSheet.create({
     marginTop: 5,
     color: '#FA2F13',
   },
+  hospitalList: {
+    // position: 'absolute',
+    // top: 40,
+    width: '100%',
+    borderWidth: 0.5,
+    borderStyle: 'solid',
+    borderColor: '#CCCCCC',
+    borderBottomRightRadius: 8,
+    borderBottomLeftRadius: 8,
+    borderTopWidth: 0,
+    marginBottom: 40,
+    // zIndex: 100,
+    // elevation: 100,
+  },
+  hospitalItem: {
+    padding: 12,
+    // zIndex: 9999,
+    // backgroundColor: '',
+  },
+  hospitalItemText: {},
+  uploadTitle: {
+    fontSize: 17,
+    marginBottom: 5,
+  },
+  uploadSubtitle: {
+    fontSize: 12,
+    color: '#1CB9D9',
+    marginBottom: 12,
+  },
+  folderWrap: {
+    borderStyle: 'dashed',
+    borderColor: '#1CB9D9',
+    borderWidth: 1,
+    borderRadius: 8,
+    alignItems: 'center',
+    backgroundColor: '#D2F3F933',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  folderImage: {
+    width: 24,
+    height: 24,
+    marginBottom: 8,
+  },
+  fileImage: {
+    width: 24,
+    height: 24,
+  },
+  folderText: {
+    color: '#1CB9D9',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  fileWrap: {
+    borderColor: '#F2F2F2',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    paddingHorizontal: 22,
+    paddingVertical: 14,
+    paddingRight: 10,
+    borderRadius: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    // gap: 10,?
+  },
+  filename: {
+    flex: 1,
+    // marginRight: 10,
+    marginLeft: 10,
+  },
 });
 
+// export const RegisterInfoStyle
 // export default {RegisterTypeStyle, RegisterAgreeStyle};
 // export RegisterTypeStyle;

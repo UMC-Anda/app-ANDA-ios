@@ -5,7 +5,7 @@ export const readyButton = atom<boolean>({
   default: false,
 });
 
-export const registerType = atom<String>({
+export const registerTypeState = atom<String>({
   key: 'RegisterType',
   default: '',
 });
@@ -29,3 +29,5 @@ export const registerInfoNormal = atom({
     recommendUserId: '',
   },
 });
+
+// export const

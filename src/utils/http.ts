@@ -25,14 +25,14 @@ http.interceptors.response.use(
   },
   async error => {
     const {config, response} = error;
-
+    console.log(response);
     // if (status === 401) {
     if (response.data.code === 5103) {
       const originalRequest = config;
       const refreshToken = await AsyncStorage.getItem('refreshToken');
       // token refresh 요청
       const {data} = await http.post(
-        'users/token/update', // token refresh api
+        '/users/token/update', // token refresh api
         {
           refreshToken,
         },
@@ -40,8 +40,10 @@ http.interceptors.response.use(
       // 새로운 토큰 저장
       const {accessToken: newAccessToken, refreshToken: newRefreshToken} =
         data.result;
+
       setToken(newAccessToken, newRefreshToken);
       // axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
+      // http.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
       originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
       // 401로 요청 실패했던 요청 새로운 accessToken으로 재요청
       return http(originalRequest);

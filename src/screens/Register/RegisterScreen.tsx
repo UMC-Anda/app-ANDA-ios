@@ -1,6 +1,6 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import RegisterType from './RegisterType';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import RegisterAgree from './RegisterAgree';
 import {View} from 'react-native';
 import {Button, DefaultTheme, IconButton} from 'react-native-paper';
@@ -28,18 +28,18 @@ const theme = {
   },
 };
 
-let current = 0;
-const route = ['Type', 'Agree', 'Info'];
+// let current = 0;
+const routes = ['Type', 'Agree', 'Info'];
 const buttonContent = ['다음', '동의 후 가입하기', '회원가입 완료'];
 
-function HeaderLeft({navigation}: any): JSX.Element {
+function HeaderLeft({navigation, current, setCurrent}: any): JSX.Element {
   const setReady = useSetRecoilState(readyButton);
   return (
     <IconButton
       icon="chevron-left"
       onPress={() => {
         if (current > 0) {
-          current--;
+          setCurrent(current - 1);
         }
         setReady(true);
         navigation.goBack();
@@ -56,13 +56,18 @@ function RegisterScreen(): JSX.Element {
   const [ready, setReady] = useRecoilState(readyButton);
   const info = useRecoilValue(registerInfoNormal);
   const terms = useRecoilValue(registerTerms);
-  console.log(ready);
+  const [current, setCurrent] = useState(0);
 
   useEffect(() => {
     if (current === 2 && info.email && info.nickname && info.password) {
       setReady(true);
     }
-  }, [info, setReady]);
+  }, [info, setReady, current]);
+
+  useEffect(() => {
+    setReady(false);
+    navigation.navigate(routes[current] as never);
+  }, [current, navigation, setReady]);
   return (
     <View style={{height: '100%'}}>
       <Stack.Navigator
@@ -103,9 +108,7 @@ function RegisterScreen(): JSX.Element {
         contentStyle={{paddingBottom: insets.bottom, paddingTop: 7}}
         onPress={async () => {
           if (current < 2) {
-            current++;
-            setReady(false);
-            navigation.navigate(route[current] as never);
+            setCurrent(current + 1);
           } else {
             try {
               const {data} = await http.post('/users/signup', {

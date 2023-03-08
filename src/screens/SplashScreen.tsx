@@ -2,7 +2,7 @@ import * as BootSplash from 'react-native-bootsplash';
 import {View} from 'react-native';
 import {Animated, Dimensions, StyleSheet} from 'react-native';
 import * as React from 'react';
-import {isAuthenticated} from '../utils/jwt';
+import {distroyToken, isAuthenticated} from '../utils/jwt';
 import {useRecoilValue} from 'recoil';
 import {autoLoginState} from '../state/setting';
 
@@ -47,6 +47,9 @@ function SplashScreen({navigation}: any): JSX.Element {
       // const token = await getrefreshToken();
       const isAuth = await isAuthenticated();
       await BootSplash.hide();
+      // if (!isAuth) {
+      //   await distroyToken();
+      // }
       Animated.stagger(350, [
         Animated.spring(translateY.current, {
           useNativeDriver: true,
@@ -68,6 +71,7 @@ function SplashScreen({navigation}: any): JSX.Element {
           navigation.replace('main');
           // navigation.replace('Login');
         } else {
+          distroyToken();
           navigation.replace('Login');
         }
       });
