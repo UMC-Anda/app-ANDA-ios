@@ -9,8 +9,8 @@ http.interceptors.request.use(
     const accessToekn = await getAccessToken();
     const isAuth = await isAuthenticated();
     if (isAuth) {
-      config.headers.common.Authorization = `Bearer ${accessToekn}`;
-      //   config.headers.common.Authorization
+      config.headers.Authorization = `Bearer ${accessToekn}`;
+      // console.log('start session');
     }
     return config;
   },
@@ -21,13 +21,14 @@ http.interceptors.request.use(
 
 http.interceptors.response.use(
   async response => {
+    // console.log(response);
     return response;
   },
   async error => {
     const {config, response} = error;
-    console.log(response);
+    // console.log(response);
     // if (status === 401) {
-    if (response.data.code === 5103) {
+    if (response && response.data && response.data.code === 5103) {
       const originalRequest = config;
       const refreshToken = await AsyncStorage.getItem('refreshToken');
       // token refresh 요청
@@ -42,8 +43,8 @@ http.interceptors.response.use(
         data.result;
 
       setToken(newAccessToken, newRefreshToken);
-      // axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
-      // http.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
+      // axios.defaults.headers.Authorization = `Bearer ${newAccessToken}`;
+      // http.defaults.headers.Authorization = `Bearer ${newAccessToken}`;
       originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
       // 401로 요청 실패했던 요청 새로운 accessToken으로 재요청
       return http(originalRequest);
